@@ -1,0 +1,17 @@
+# 缩进风格
+indent_style = space
+indent_size = 2
+
+# 换行符
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# 针对 JavaScript/TypeScript
+[*.{js,jsx,ts,tsx,json}]
+indent_size = 2
+
+# 针对 CSS
+[*.css]
+indent_size = 2
