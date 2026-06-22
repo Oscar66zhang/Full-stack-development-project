@@ -4,7 +4,13 @@ import './App.css';
 import { ConfigProvider } from 'antd';
 function App() {
   return (
-    <ConfigProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#eb6c00',
+        },
+      }}
+    >
       <RouterProvider router={router} />
     </ConfigProvider>
   );
