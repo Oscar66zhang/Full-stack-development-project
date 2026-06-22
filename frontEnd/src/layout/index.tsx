@@ -3,6 +3,7 @@ import { Layout, theme } from 'antd';
 import SideMenu from '@/components/Menu';
 import NavHeader from '@/components/NavHeader';
 import NavFooter from '@/components/NavFooter';
+import { Outlet } from 'react-router-dom';
 const { Content } = Layout;
 
 const LayoutPage: React.FC = () => {
@@ -25,7 +26,7 @@ const LayoutPage: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            Bill is a cat.
+            <Outlet />
           </div>
         </Content>
         <NavFooter />

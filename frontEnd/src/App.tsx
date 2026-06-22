@@ -1,7 +1,13 @@
-import Layout from './layout';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
 import './App.css';
+import { ConfigProvider } from 'antd';
 function App() {
-  return <Layout />;
+  return (
+    <ConfigProvider>
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  );
 }
 
 export default App;
