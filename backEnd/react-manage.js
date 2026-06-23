@@ -1,18 +1,6 @@
 /*
  Navicat Premium Dump Script
 
- Source Server         : localhost
- Source Server Type    : MongoDB
- Source Server Version : 80004 (8.0.4)
- Source Host           : localhost:27017
- Source Schema         : react-manage
-
- Target Server Type    : MongoDB
- Target Server Version : 80004 (8.0.4)
- File Encoding         : 65001
-
- Date: 23/06/2026 22:19:20
-*/
 
 
 // ----------------------------
