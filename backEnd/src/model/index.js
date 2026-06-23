@@ -1,18 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const { mongoPath } = require('../config/config.default');
+const { mongoPath } = require("../config/config.default");
 
 async function main() {
-    await mongoose.connect(mongoPath);
+  await mongoose.connect(mongoPath);
 }
 
-main().then(res => {
+main()
+  .then((res) => {
     console.log("mongoDB 连接成功");
-}).catch(err => {
+  })
+  .catch((err) => {
     console.log(err);
-})
+  });
 
 module.exports = {
-    //用户模块
-    User: mongoose.model('User', require('./userModel'))
-}
+  //用户模块
+  User: mongoose.model("User", require("./systmeManage/userModel")),
+  Role: mongoose.model("Role", require("./systmeManage/roleModel")),
+};
