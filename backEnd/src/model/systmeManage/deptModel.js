@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const baseModel = require("./baseModel");
+const baseModel = require("../baseModel");
 
 const deptSchema = new mongoose.Schema({
   deptName: { type: String, required: true }, // 部门名称
