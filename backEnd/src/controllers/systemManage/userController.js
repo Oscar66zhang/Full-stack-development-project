@@ -1,5 +1,5 @@
-const { User } = require('../model');
-const { createToken } = require('../util/jwt');
+const { User } = require('../../model');
+const { createToken } = require('../../util/jwt');
 
 //获取用户
 exports.getUserList = async ctx => {

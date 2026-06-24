@@ -1,7 +1,7 @@
 const Router = require("@koa/router");
 const router = new Router();
 const { verifyToken } = require("../../util/jwt");
-const roleController = require('../../controllers/roleController')
+const roleController = require('../../controllers/systemManage/roleController')
 
 router.get(
   "/roles/getRoleList",

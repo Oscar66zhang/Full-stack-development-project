@@ -1,8 +1,8 @@
-const { Role } = require("../model");
+const { Role } = require("../../model");
 
 // 获取角色列表
 exports.getRoleList = async (ctx) => {
-  const { roleName, remart } = ctx.query;
+  const { roleName, remark } = ctx.query;
   const page = Number(ctx.query.page) || 1;
   const size = Number(ctx.query.size) || 10;
   //构建查询条件
