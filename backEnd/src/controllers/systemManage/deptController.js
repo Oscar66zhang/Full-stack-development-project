@@ -1,9 +1,7 @@
 const { Dept } = require("../../model");
 
 //获取部门列表
-const {
-  Dept,
-} = async (ctx) => {
+exports.getDeptList = async (ctx) => {
   const { depName } = ctx.query;
   const query = {};
   if (depName) query.deptName = depName;
@@ -17,6 +15,7 @@ const {
   };
 };
 
+
 //根据ID获取
 exports.getDeptById = async (ctx) => {
   const { _id } = ctx.query;
@@ -25,7 +24,7 @@ exports.getDeptById = async (ctx) => {
 };
 
 //添加部门
-exports.addDept = async (cxt) => {
+exports.addDept = async (ctx) => {
   const { deptName, parentId, userName } = ctx.request.body;
   if (!deptName) {
     ctx.status = 400;

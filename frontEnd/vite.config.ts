@@ -14,4 +14,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),  // 路径别名：@ 指向 src 目录
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
+  },
 })

@@ -6,7 +6,7 @@ const userRouter = require("./systemManage/user");
 const roleRouter = require("./systemManage/role");
 const deptRouter = require("./systemManage/dept");
 const menuRouter = require("./systemManage/menu");
-const dashboardRouter = require("./systemManage/dashboard");
+const dashboardRouter = require("./dashBoard/dashboard");
 
 //注册子路由
 router.use(userRouter.routes(), userRouter.allowedMethods());

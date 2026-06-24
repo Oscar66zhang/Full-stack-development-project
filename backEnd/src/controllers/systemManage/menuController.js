@@ -59,11 +59,11 @@ exports.addMenu = async (ctx) => {
     component,
   });
   await menu.save();
-  cxt.body = { code: 200, message: "添加成功" };
+  ctx.body = { code: 200, message: "添加成功" };
 };
 
 //编辑菜单
-const editMenu = async (ctx) => {
+exports.editMenu = async (ctx) => {
   const {
     _id,
     menuName,
