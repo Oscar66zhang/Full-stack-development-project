@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   PieChartOutlined,
   UserOutlined,
@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const { Sider } = Layout;
 
@@ -43,6 +43,18 @@ const items: MenuItem[] = [
 const SideMenu: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const openKeys = useMemo(() => {
+    if (location.pathname.startsWith('/system')) {
+      return ['sub1'];
+    }
+    if (location.pathname.startsWith('/order')) {
+      return ['sub1'];
+    }
+
+    return [];
+  }, [location.pathname]);
 
   const handleMenuClick = (e: { key: string }) => {
     navigate(e.key);
@@ -57,8 +69,9 @@ const SideMenu: React.FC = () => {
       <div className="demo-logo-vertical" />
       <Menu
         theme="dark"
-        defaultSelectedKeys={['1']}
+        selectedKeys={[location.pathname]}
         mode="inline"
+        openKeys={collapsed ? [] : openKeys}
         items={items}
         onClick={handleMenuClick}
       />

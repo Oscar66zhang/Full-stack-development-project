@@ -16,13 +16,11 @@ const LayoutPage: React.FC = () => {
       <SideMenu />
       <Layout>
         <NavHeader />
-        <Content style={{ margin: '0 16px' }}>
+        <Content style={{ margin: '0 6px' }}>
           <div
             style={{
-              marginTop: 20,
               padding: 24,
               minHeight: 360,
-              background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
           >

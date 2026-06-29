@@ -19,6 +19,7 @@ export interface UserItem {
   createId: number;
   deptName: string;
   userImg: string;
+  createAt:string
 }
 
 export interface UserParams extends UserPageParams {

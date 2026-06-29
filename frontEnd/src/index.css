@@ -1,5 +1,22 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 .ant-breadcrumb-separator {
   color: #000 !important;
 }
+
+.search-form {
+  @apply p-4 bg-white rounded-lg;
+}
+
+.base-table {
+  @apply bg-white rounded-md text-black;
+}
+
+.header-wrapper {
+  @apply flex justify-between items-center p-4;
+}
+
+.header-wrapper .action button {
+  margin-left: 15px;
+}
+
