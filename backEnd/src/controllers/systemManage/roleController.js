@@ -3,23 +3,28 @@ const { Role } = require("../../model");
 // 获取角色列表
 exports.getRoleList = async (ctx) => {
   const { roleName, remark } = ctx.query;
-  const page = Number(ctx.query.page) || 1;
-  const size = Number(ctx.query.size) || 10;
+  const pageNum = Number(ctx.query.pageNum) || 1;
+  const pageSize = Number(ctx.query.pageSize) || 10;
+
   //构建查询条件
   const query = {};
-  if (roleName) query.roleName = roleName;
-  if (remark) query.remark = remark;
+  if (roleName) query.roleName = new RegExp(roleName, "i");
+  if (remark) query.remark = new RegExp(remark, "i");
   const total = await Role.countDocuments(query);
   const list = await Role.find(query)
-    .skip((page - 1) * size)
-    .limit(size)
+    .skip((pageNum - 1) * pageSize)
+    .limit(pageSize)
     .sort({ createAt: -1 });
 
   ctx.body = {
     code: 200,
     message: "success",
     data: {
-      page: { total },
+      page: {
+        pageNum,
+        pageSize,
+        total,
+      },
       list,
     },
   };

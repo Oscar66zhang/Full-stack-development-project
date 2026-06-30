@@ -18,5 +18,5 @@ module.exports = {
   //用户模块
   User: mongoose.model("User", require("./systmeManage/userModel")),
   Role: mongoose.model("Role", require("./systmeManage/roleModel")),
-  Dept: mongoose.model("Role", require("./systmeManage/roleModel")),
+  Dept: mongoose.model("Dept", require("./systmeManage/deptModel")),
 };

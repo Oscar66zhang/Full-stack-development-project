@@ -3,7 +3,7 @@ import axios, {
   type AxiosRequestConfig,
   type InternalAxiosRequestConfig,
 } from 'axios';
-import { message } from 'antd';
+import { message } from './AntdGlobal';
 import { showLoading, hideLoading } from './loading';
 
 interface ApiResponse<T = unknown> {
@@ -52,7 +52,7 @@ request.interceptors.request.use(
 );
 
 request.interceptors.response.use(
-  (response) => {
+  response => {
     endLoading();
     return response.data;
   },

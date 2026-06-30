@@ -2,9 +2,9 @@ const { Dept } = require("../../model");
 
 //获取部门列表
 exports.getDeptList = async (ctx) => {
-  const { depName } = ctx.query;
+  const { deptName } = ctx.query;
   const query = {};
-  if (depName) query.deptName = depName;
+  if (deptName) query.deptName = deptName;
   const list = await Dept.find(query).sort({ createAt: -1 });
   //构建树形结构
   const tree = buildTree(list);
@@ -14,7 +14,6 @@ exports.getDeptList = async (ctx) => {
     data: tree,
   };
 };
-
 
 //根据ID获取
 exports.getDeptById = async (ctx) => {
@@ -99,22 +98,26 @@ exports.deleteDept = async (ctx) => {
 
 // 构建树形结构
 function buildTree(list) {
-  const map = {};
-  const result = [];
+  const map = {}
+  const result = []
 
-  list.forEach((item) => {
-    map[item._id] = { ...item.toObject(), children: [] };
-  });
-
-  list.forEach((item) => {
-    const node = map[item._id];
-    if (item.parentId) {
-      if (map[item.parentId]) {
-        map[item.parentId].children.push(node);
-      }
-    } else {
-      result.push(node);
+  list.forEach(item => {
+    const obj = item.toObject ? item.toObject() : item
+    map[String(obj._id)] = {
+      ...obj,
+      _id: String(obj._id),
+      parentId: obj.parentId ? String(obj.parentId) : '',
+      children: []
     }
-  });
-  return result;
+  })
+
+  Object.values(map).forEach(node => {
+    if (node.parentId && node.parentId !== '0' && map[node.parentId]) {
+      map[node.parentId].children.push(node)
+    } else {
+      result.push(node)
+    }
+  })
+
+  return result
 }
