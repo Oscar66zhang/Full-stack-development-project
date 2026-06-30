@@ -85,7 +85,16 @@ const CreateUser = forwardRef<IModalRef<UserItem>, IModalProp>((props, ref) => {
         const res = await userApi.editUser(params);
         message.success(res.message);
       }
+      props.update();
+      setVisible(false);
+      form.resetFields();
+      setImg('');
     }
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+    form.resetFields();
   };
 
   //================================================文件处理==========================================================
@@ -178,7 +187,7 @@ const CreateUser = forwardRef<IModalRef<UserItem>, IModalProp>((props, ref) => {
 
         <Form.Item
           label="部门"
-          name="deptId"
+          name="deptName"
           rules={[
             {
               required: true,
