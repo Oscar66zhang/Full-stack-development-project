@@ -5,14 +5,13 @@ import {
   useImperativeHandle,
   useState,
 } from 'react';
-import { Form, message, Modal, Tree } from 'antd';
+import { Form, message, Modal, Tree, type TreeProps } from 'antd';
 import type { IModalProp, IAction, IModalRef } from '@/types/modal';
 import type { RoleItem, Permission } from '@/types/systemManage/roles';
 import type { MenuItem } from '@/types/systemManage/menu';
 import { menuApi, rolesApi } from '@/api/index';
-import type { Key } from 'react';
 
-const SetPermission = forwardRef<IModalRef<MenuItem>, IModalProp>(
+const SetPermission = forwardRef<IModalRef<RoleItem>, IModalProp>(
   (props, ref) => {
     const [visible, setVisible] = useState(false);
     const [menuList, setMenuList] = useState<MenuItem[]>([]);
@@ -44,7 +43,93 @@ const SetPermission = forwardRef<IModalRef<MenuItem>, IModalProp>(
       open,
     }));
 
-    return <div>SetPermission</div>;
+    //========================================操作按钮========================================
+    //提交按钮
+    const handleSubmit = async () => {
+      if (!permission) {
+        message.warning('请先选择权限');
+        return;
+      }
+      const params = permission || {
+        _id: roleInfo?._id,
+        permissionList: roleInfo?.permissionList,
+      };
+
+      const res = await rolesApi.updatePermission(params);
+      message.success(res.message || '权限设置成功');
+
+      setVisible(false);
+      setPermission(undefined);
+      props.update();
+    };
+
+    //取消按钮
+    const handleCancel = () => {
+      setVisible(false);
+      setPermission(undefined);
+    };
+
+    //树形控件勾选事件
+    const onCheck: TreeProps<MenuItem>['onCheck'] = (
+      checkedKeysValue,
+      info
+    ) => {
+      const currentCheckedKeys = Array.isArray(checkedKeysValue)
+        ? checkedKeysValue
+        : checkedKeysValue.checked;
+      setCheckedKeys(currentCheckedKeys);
+
+      const permissionCheckedKeys: string[] = [];
+      const parentKeys: string[] = [];
+      info.checkedNodes.forEach(node => {
+        if (node.menuType === 2) {
+          permissionCheckedKeys.push(node._id);
+        } else {
+          parentKeys.push(node._id);
+        }
+      });
+      setPermission({
+        _id: roleInfo?._id || '',
+        permissionList: {
+          checkedKeys: permissionCheckedKeys,
+          halfCheckedKeys: [
+            ...parentKeys,
+            ...(info.halfCheckedKeys || []).map(String),
+          ],
+        },
+      });
+    };
+
+    return (
+      <Modal
+        title="设置权限"
+        width={600}
+        open={visible}
+        okText="确定"
+        cancelText="取消"
+        onOk={handleSubmit}
+        onCancel={handleCancel}
+      >
+        <Form labelAlign="right" labelCol={{ span: 4 }}>
+          <Form.Item label="角色名称">{roleInfo?.roleName}</Form.Item>
+
+          <Form.Item label="权限">
+            <Tree<MenuItem>
+              checkable
+              defaultExpandAll
+              checkedKeys={checkedKeys}
+              treeData={menuList}
+              fieldNames={{
+                title: 'menuName',
+                key: '_id',
+                children: 'children',
+              }}
+              onCheck={onCheck}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+    );
   }
 );
 

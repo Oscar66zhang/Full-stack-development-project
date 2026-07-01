@@ -30,6 +30,30 @@ exports.getRoleList = async (ctx) => {
   };
 };
 
+//更新角色权限
+exports.updatePermission = async (ctx) => {
+  const { _id, permissionList } = ctx.request.body;
+  if (!_id) {
+    ctx.status = 400;
+    ctx.body = { code: 400, message: "_id 为必填字段" };
+  }
+
+  if (!permissionList) {
+    ctx.status = 400;
+    ctx.body = { code: 400, message: "permissionList 为必填字段" };
+    return;
+  }
+
+  await Role.findByIdAndUpdate(_id, {
+    permissionList: {
+      checkedKeys: permissionList.checkedKeys,
+      halfCheckedKeys: permissionList.halfCheckedKeys,
+    },
+  });
+
+  ctx.body = { code: 200, message: "权限设置成功" };
+};
+
 //添加角色
 exports.addRole = async (ctx) => {
   const { roleName, remark, permissionList } = ctx.request.body;

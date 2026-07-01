@@ -14,12 +14,14 @@ import {
 import type { TableColumnsType } from 'antd';
 import type { RoleItem } from '@/types/systemManage/roles';
 import CreateRole from './CreateRole';
+import SetPermission from './SetPermission';
 import type { IModalRef } from '@/types/modal';
 
 const RoleList = () => {
   const [form] = Form.useForm();
   const [roleList, setRoleList] = React.useState<RoleItem[]>([]);
   const roleModalRef = useRef<IModalRef<RoleItem>>(null);
+  const permissionRef = useRef<IModalRef<RoleItem>>(null);
 
   //获取角色列表
   const getroleList = async () => {
@@ -60,7 +62,12 @@ const RoleList = () => {
           <a onClick={() => handleEdit(record)} style={{ color: '#000' }}>
             编辑
           </a>
-          <a style={{ color: '#000' }}>设置权限</a>
+          <a
+            onClick={() => handleSetPermission(record)}
+            style={{ color: '#000' }}
+          >
+            设置权限
+          </a>
           <a onClick={() => handleDelete(record)} style={{ color: '#f5222d' }}>
             删除
           </a>
@@ -93,6 +100,11 @@ const RoleList = () => {
         getroleList();
       },
     });
+  };
+
+  //设置权限
+  const handleSetPermission = (record: RoleItem) => {
+    permissionRef.current?.open('edit', record);
   };
 
   //重置表单
@@ -138,6 +150,7 @@ const RoleList = () => {
       </div>
 
       <CreateRole ref={roleModalRef} update={getroleList} />
+      <SetPermission ref={permissionRef} update={getroleList} />
     </div>
   );
 };

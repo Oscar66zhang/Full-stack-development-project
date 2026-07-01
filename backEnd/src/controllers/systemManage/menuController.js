@@ -125,6 +125,8 @@ exports.deleteMenu = async (ctx) => {
   ctx.body = { code: 200, message: "删除成功" };
 };
 
+
+
 //构建树形结构
 function buildTree(list) {
   const map = {};

@@ -11,4 +11,5 @@ export default {
   getMenuList() {
     return get<MenuItem[]>('/menu/getMenuList');
   },
+
 };

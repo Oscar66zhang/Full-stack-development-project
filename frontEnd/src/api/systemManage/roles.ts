@@ -4,6 +4,7 @@ import type {
   CreateParams,
   EditParams,
   Params,
+  Permission,
 } from '@/types/systemManage/roles';
 
 export default {
@@ -25,5 +26,9 @@ export default {
   },
   deleteRole(params: { _id: string }) {
     return post('/roles/deleteRole', params);
+  },
+
+  updatePermission(data: Permission) {
+    return post('/roles/updatePermission', data);
   },
 };
