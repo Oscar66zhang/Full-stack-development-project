@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   PieChartOutlined,
   UserOutlined,
@@ -42,18 +42,16 @@ const items: MenuItem[] = [
 
 const SideMenu: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const openKeys = useMemo(() => {
+  useEffect(() => {
     if (location.pathname.startsWith('/system')) {
-      return ['sub1'];
+      setOpenKeys(['sub1']);
+    } else if (location.pathname.startsWith('/order')) {
+      setOpenKeys(['sub2']);
     }
-    if (location.pathname.startsWith('/order')) {
-      return ['sub1'];
-    }
-
-    return [];
   }, [location.pathname]);
 
   const handleMenuClick = (e: { key: string }) => {
@@ -67,11 +65,13 @@ const SideMenu: React.FC = () => {
       onCollapse={(value: boolean) => setCollapsed(value)}
     >
       <div className="demo-logo-vertical" />
+
       <Menu
         theme="dark"
         selectedKeys={[location.pathname]}
         mode="inline"
         openKeys={collapsed ? [] : openKeys}
+        onOpenChange={keys => setOpenKeys(keys)}
         items={items}
         onClick={handleMenuClick}
       />

@@ -107,7 +107,7 @@ exports.editMenu = async (ctx) => {
 
 //删除菜单
 exports.deleteMenu = async (ctx) => {
-  const { _id } = ctx.params;
+  const { _id } = ctx.request.body;
   if (!_id) {
     cxt.status = 500;
     ctx.body = { code: 400, message: "_id 为必填字段" };
@@ -124,8 +124,6 @@ exports.deleteMenu = async (ctx) => {
   await Menu.findByIdAndDelete(_id);
   ctx.body = { code: 200, message: "删除成功" };
 };
-
-
 
 //构建树形结构
 function buildTree(list) {
