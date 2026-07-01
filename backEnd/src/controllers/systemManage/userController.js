@@ -19,7 +19,7 @@ exports.getUserList = async (ctx) => {
   const list = await User.find(query)
     .skip((page - 1) * size)
     .limit(Number(size))
-    .sort({ userId: -1 });
+    .sort({ userId: 1 });
   ctx.body = { code: 200, data: { list, total } };
 };
 
@@ -52,14 +52,18 @@ exports.addUser = async (ctx) => {
     return;
   }
 
-  const userModel = new User(ctx.request.body);
+  //获取userId并+1
+  const maxUser = await User.findOne().sort({ userId: -1 });
+  const userId = maxUser ? maxUser.userId + 1 : 1001;
+
+  const userModel = new User({ ...ctx.request.body, userId });
   await userModel.save();
   ctx.body = { code: 200, message: "添加成功" };
 };
 
 //编辑用户
 exports.editUser = async (ctx) => {
-  const { userName, userEmail, deptName } = ctx.request.body;
+  const { userId, userName, userEmail, deptName } = ctx.request.body;
 
   //校验必填字段
   if (!userName || !userEmail || !deptName) {
@@ -71,7 +75,10 @@ exports.editUser = async (ctx) => {
     return;
   }
 
-  const existingUserName = await User.findOne({ userName, _id: { $ne: _id } });
+  const existingUserName = await User.findOne({
+    userName,
+    userId: { $ne: userId },
+  });
 
   //校验用户名是否存在
   if (existingUserName) {
@@ -89,15 +96,18 @@ exports.editUser = async (ctx) => {
   }
 
   //建议邮箱是否已存在
-  const existingUser = await User.findOne({ userEmail, _id: { $ne: _id } });
+  const existingUser = await User.findOne({
+    userEmail,
+    userId: { $ne: userId },
+  });
   if (existingUser) {
     ctx.status = 400;
     ctx.body = { code: 400, message: "该邮箱已被注册" };
     return;
   }
 
-  const { userId, ...updateData } = ctx.request.body;
-  await User.findByIdAndUpdate(userId, updateData);
+  const { userId: id, ...updateData } = ctx.request.body;
+  await User.findOneAndUpdate({ userId: id }, updateData);
   ctx.body = { code: 200, message: "修改成功" };
 };
 

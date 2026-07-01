@@ -19,4 +19,5 @@ module.exports = {
   User: mongoose.model("User", require("./systmeManage/userModel")),
   Role: mongoose.model("Role", require("./systmeManage/roleModel")),
   Dept: mongoose.model("Dept", require("./systmeManage/deptModel")),
+  Menu: mongoose.model("Menu", require("./systmeManage/menuModel")),
 };

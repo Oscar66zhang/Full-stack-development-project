@@ -13,7 +13,7 @@ exports.getMenuList = async (ctx) => {
   const tree = buildTree(list);
   ctx.body = {
     code: 200,
-    message: success,
+    message: "success",
     data: tree,
   };
 };

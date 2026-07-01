@@ -4,6 +4,7 @@ const md5 = require("../../util/md5");
 const baseModel = require("../baseModel");
 
 const userSchema = new mongoose.Schema({
+  userId: { type: Number, required: true }, // 用户ID
   userName: { type: String, required: true }, // 用户名
   userEmail: { type: String, required: true }, // 邮箱
   userImg: { type: String }, // 头像（可选）

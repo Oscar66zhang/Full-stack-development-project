@@ -150,6 +150,9 @@ const UserList: React.FC = () => {
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {
+        await userApi.deleteUser({
+          userId: [record.userId],
+        });
         search.submit();
       },
     });
