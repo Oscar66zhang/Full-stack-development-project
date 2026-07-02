@@ -20,35 +20,45 @@ exports.searchDeptList = async (ctx) => {
   const { deptName } = ctx.query;
   const query = {};
 
+  // 如果传了部门名称，就做模糊搜索
   if (deptName) {
     query.deptName = new RegExp(deptName, "i");
   }
 
+  // 先查出符合搜索条件的部门
   let list = await Dept.find(query).sort({ createAt: -1 });
 
+  // 从搜索结果中拿到所有父级 ID，并去重
   let parentIds = [
     ...new Set(
       list.filter((item) => item.parentId).map((item) => item.parentId),
     ),
   ];
 
+  // 只要还有父级 ID，就继续向上查父部门
   while (parentIds.length > 0) {
+    // 根据 parentIds 查询父级部门
     const parents = await Dept.find({
       _id: { $in: parentIds },
     });
 
+    // 记录当前 list 里已经存在的部门 ID，防止重复添加
     const existIds = new Set(list.map((item) => String(item._id)));
 
+    // 过滤出还没有加入 list 的父部门
     const newParents = parents.filter(
       (item) => !existIds.has(String(item._id)),
     );
 
+    // 没有新的父部门，说明已经查完了，退出循环
     if (newParents.length === 0) {
       break;
     }
 
+    // 把新查到的父部门合并到 list 中
     list = [...list, ...newParents];
 
+    // 继续收集这些父部门的上级 ID
     parentIds = [
       ...new Set(
         newParents.filter((item) => item.parentId).map((item) => item.parentId),
@@ -56,6 +66,7 @@ exports.searchDeptList = async (ctx) => {
     ];
   }
 
+  // 把最终的扁平数组转换成树结构返回
   ctx.body = {
     code: 200,
     message: "success",
