@@ -4,11 +4,12 @@ import type {
   EditParams,
   CreateParams,
   DelParams,
+  Params,
 } from '@/types/systemManage/dept';
 
 export default {
   //获取部门列表
-  getDeptList(params?: Partial<DeptItem>) {
+  getDeptList(params?: Partial<Params>) {
     return get<DeptItem[]>('/dept/getDeptList', params);
   },
   //编辑部门列表
@@ -22,5 +23,9 @@ export default {
   //删除部门列表
   deleteDepList(params: DelParams) {
     return post('/dept/deleteDept', params);
+  },
+  //搜索部门列表
+  searchDeptList(params?: Partial<Params>) {
+    return get<DeptItem[]>('/dept/searchDeptList', params);
   },
 };

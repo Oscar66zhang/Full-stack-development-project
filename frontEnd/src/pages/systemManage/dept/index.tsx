@@ -1,21 +1,26 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type Key } from 'react';
 import { Button, Form, Input, Modal, Space, Table, message } from 'antd';
 import type { DeptItem } from '@/types/systemManage/dept';
 import type { TableProps } from 'antd';
 import type { IModalRef } from '@/types/modal';
 import { deptApi } from '@/api/systemManage';
 import CreateDept from './CreateDept';
+import { buildTree, getAllTreeKeys } from '@/utils/tree';
 
 const DepList = () => {
   const [form] = Form.useForm();
   const [deptList, setDeptList] = useState<DeptItem[]>([]);
   const deptModalRef = useRef<IModalRef<DeptItem>>(null);
 
+  //展开所有节点
+  const [expandedRowKeys, setExpandedRowKeys] = useState<Key[]>([]);
+
   //获取部门数据
   const fetchDeptData = async () => {
     try {
-      const res = await deptApi.getDeptList(form.getFieldsValue());
-      setDeptList(res.data);
+      const res = await deptApi.getDeptList();
+      const treeData = buildTree<DeptItem>(res.data);
+      setDeptList(treeData);
     } catch (err) {
       console.error(err);
     }
@@ -24,6 +29,26 @@ const DepList = () => {
   useEffect(() => {
     fetchDeptData();
   }, []);
+
+  //============================================处理搜索函数==============================================
+  //搜索函数
+  const searchDeptData = async () => {
+    try {
+      const values = form.getFieldsValue();
+      const res = values.deptName
+        ? await deptApi.searchDeptList(values)
+        : await deptApi.getDeptList();
+      const treeData = buildTree<DeptItem>(res.data);
+      setDeptList(treeData);
+      if (values.deptName) {
+        setExpandedRowKeys(getAllTreeKeys(treeData));
+      } else {
+        setExpandedRowKeys([]);
+      }
+    } catch (error) {
+      console.error('获取搜索结果失败:', error);
+    }
+  };
 
   //===============================================表格列配置========================================
   const columns: TableProps<DeptItem>['columns'] = [
@@ -111,14 +136,14 @@ const DepList = () => {
   return (
     <div className="flex flex-col gap-5">
       <div className="search-form">
-        <Form layout="inline" form={form} initialValues={{ menuState: 1 }}>
+        <Form layout="inline" form={form}>
           <Form.Item label="部门名称" name="deptName">
             <Input type="text" placeholder="请输入部门名称" />
           </Form.Item>
 
           <Form.Item>
             <Space size={10}>
-              <Button type="primary" onClick={fetchDeptData}>
+              <Button type="primary" onClick={searchDeptData}>
                 搜索
               </Button>
               <Button onClick={handleReset}>重置</Button>
@@ -129,7 +154,7 @@ const DepList = () => {
 
       <div className="base-table">
         <div className="header-wrapper">
-          <div className="title text-lg font-medium">菜单列表</div>
+          <div className="title text-lg font-medium">部门列表</div>
           <div className="action flex items-center gap-3">
             <Button type="primary" onClick={handleCreate}>
               新增
@@ -141,9 +166,17 @@ const DepList = () => {
           rowKey="_id"
           columns={columns}
           dataSource={deptList}
+          expandable={{
+            expandedRowKeys,
+            onExpandedRowsChange: keys => setExpandedRowKeys([...keys]),
+          }}
         />
       </div>
-      <CreateDept ref={deptModalRef} update={fetchDeptData} deptList={deptList} />
+      <CreateDept
+        ref={deptModalRef}
+        update={fetchDeptData}
+        deptList={deptList}
+      />
     </div>
   );
 };

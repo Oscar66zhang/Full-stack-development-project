@@ -15,6 +15,54 @@ exports.getDeptList = async (ctx) => {
   };
 };
 
+//实现搜索部门列表的功能
+exports.searchDeptList = async (ctx) => {
+  const { deptName } = ctx.query;
+  const query = {};
+
+  if (deptName) {
+    query.deptName = new RegExp(deptName, "i");
+  }
+
+  let list = await Dept.find(query).sort({ createAt: -1 });
+
+  let parentIds = [
+    ...new Set(
+      list.filter((item) => item.parentId).map((item) => item.parentId),
+    ),
+  ];
+
+  while (parentIds.length > 0) {
+    const parents = await Dept.find({
+      _id: { $in: parentIds },
+    });
+
+    const existIds = new Set(list.map((item) => String(item._id)));
+
+    const newParents = parents.filter(
+      (item) => !existIds.has(String(item._id)),
+    );
+
+    if (newParents.length === 0) {
+      break;
+    }
+
+    list = [...list, ...newParents];
+
+    parentIds = [
+      ...new Set(
+        newParents.filter((item) => item.parentId).map((item) => item.parentId),
+      ),
+    ];
+  }
+
+  ctx.body = {
+    code: 200,
+    message: "success",
+    data: buildTree(list),
+  };
+};
+
 //根据ID获取
 exports.getDeptById = async (ctx) => {
   const { _id } = ctx.query;
@@ -66,7 +114,7 @@ exports.editDept = async (ctx) => {
 
 //删除部门
 exports.deleteDept = async (ctx) => {
-  const { _id } = ctx.params;
+  const { _id } = ctx.request.body;
   if (!_id) {
     ctx.status = 400;
     ctx.body = { code: 400, message: "_id is a required field" };
@@ -98,26 +146,23 @@ exports.deleteDept = async (ctx) => {
 
 // 构建树形结构
 function buildTree(list) {
-  const map = {}
-  const result = []
-
-  list.forEach(item => {
-    const obj = item.toObject ? item.toObject() : item
-    map[String(obj._id)] = {
+  const map = new Map();
+  list.forEach((item) => {
+    const obj = item.toObject ? item.toObject() : item;
+    map.set(String(obj._id), {
       ...obj,
       _id: String(obj._id),
-      parentId: obj.parentId ? String(obj.parentId) : '',
-      children: []
-    }
-  })
-
-  Object.values(map).forEach(node => {
-    if (node.parentId && node.parentId !== '0' && map[node.parentId]) {
-      map[node.parentId].children.push(node)
+      parentId: obj.parentId ? String(obj.parentId) : "",
+      children: [],
+    });
+  });
+  const result = [];
+  map.forEach((node) => {
+    if (node.parentId && map.has(node.parentId)) {
+      map.get(node.parentId).children.push(node);
     } else {
-      result.push(node)
+      result.push(node);
     }
-  })
-
-  return result
+  });
+  return result;
 }

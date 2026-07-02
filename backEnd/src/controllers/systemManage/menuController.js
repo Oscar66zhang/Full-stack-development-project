@@ -22,23 +22,52 @@ exports.getMenuList = async (ctx) => {
 exports.searchMenuList = async (ctx) => {
   const { menuName, menuState } = ctx.query;
   const query = {};
-  if (menuName) query.menuName = menuName;
-  if (menuState) query.menuState = Number(menuState);
+
+  if (menuName) {
+    query.menuName = new RegExp(menuName, "i");
+  }
+
+  if (menuState !== undefined) {
+    query.menuState = Number(menuState);
+  }
 
   let list = await Menu.find(query).sort({ createAt: -1 });
-  // 收集所有 parentId，查出父节点保证树结构完整
-  const parentIds = [
+
+  let parentIds = [
     ...new Set(
       list.filter((item) => item.parentId).map((item) => item.parentId),
     ),
   ];
-  if (parentIds.length > 0) {
-    const parents = await Menu.find({ _id: { $in: parentIds } });
-    list = [...list, ...parents];
+
+  while (parentIds.length > 0) {
+    const parents = await Menu.find({
+      _id: { $in: parentIds },
+    });
+
+    const existIds = new Set(list.map((item) => String(item._id)));
+
+    const newParents = parents.filter(
+      (item) => !existIds.has(String(item._id)),
+    );
+
+    if (newParents.length === 0) {
+      break;
+    }
+
+    list = [...list, ...newParents];
+
+    parentIds = [
+      ...new Set(
+        newParents.filter((item) => item.parentId).map((item) => item.parentId),
+      ),
+    ];
   }
 
-  const tree = buildTree(list);
-  ctx.body = { code: 200, message: "success", data: tree };
+  ctx.body = {
+    code: 200,
+    message: "success",
+    data: buildTree(list),
+  };
 };
 
 //根据ID获取参数
