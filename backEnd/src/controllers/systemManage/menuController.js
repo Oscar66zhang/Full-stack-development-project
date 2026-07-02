@@ -18,6 +18,29 @@ exports.getMenuList = async (ctx) => {
   };
 };
 
+//搜索菜单
+exports.searchMenuList = async (ctx) => {
+  const { menuName, menuState } = ctx.query;
+  const query = {};
+  if (menuName) query.menuName = menuName;
+  if (menuState) query.menuState = Number(menuState);
+
+  let list = await Menu.find(query).sort({ createAt: -1 });
+  // 收集所有 parentId，查出父节点保证树结构完整
+  const parentIds = [
+    ...new Set(
+      list.filter((item) => item.parentId).map((item) => item.parentId),
+    ),
+  ];
+  if (parentIds.length > 0) {
+    const parents = await Menu.find({ _id: { $in: parentIds } });
+    list = [...list, ...parents];
+  }
+
+  const tree = buildTree(list);
+  ctx.body = { code: 200, message: "success", data: tree };
+};
+
 //根据ID获取参数
 exports.getMenuById = async (ctx) => {
   const { _id } = ctx.query;
@@ -127,17 +150,15 @@ exports.deleteMenu = async (ctx) => {
 
 //构建树形结构
 function buildTree(list) {
-  const map = {};
-  const result = [];
+  const map = new Map();
   list.forEach((item) => {
-    map[item._id] = { ...item.toObject(), children: [] };
+    const obj = item.toObject ? item.toObject() : item;
+    map.set(obj._id, { ...obj, children: [] });
   });
-  list.forEach((item) => {
-    const node = map[item._id];
-    if (item.parentId) {
-      if (map[item.parentId]) {
-        map[item.parentId].children.push(node);
-      }
+  const result = [];
+  map.forEach((node) => {
+    if (node.parentId && map.has(node.parentId)) {
+      map.get(node.parentId).children.push(node);
     } else {
       result.push(node);
     }

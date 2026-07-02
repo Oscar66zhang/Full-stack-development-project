@@ -121,9 +121,14 @@ const UserList: React.FC = () => {
       width: 180,
       render: (_, record) => (
         <Space size={30}>
-          <a onClick={() => handleEdit(record)}>Edit</a>
+          <a
+            style={{ marginRight: 12, color: '#000' }}
+            onClick={() => handleEdit(record)}
+          >
+            编辑
+          </a>
           <a onClick={() => handleDelete(record)} style={{ color: '#f5222d' }}>
-            Delete
+            删除
           </a>
         </Space>
       ),

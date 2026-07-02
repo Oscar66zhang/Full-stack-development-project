@@ -59,12 +59,15 @@ const RoleList = () => {
       key: 'action',
       render: (_, record) => (
         <Space size={30}>
-          <a onClick={() => handleEdit(record)} style={{ color: '#000' }}>
+          <a
+            onClick={() => handleEdit(record)}
+            style={{ marginRight: 12, color: '#000' }}
+          >
             编辑
           </a>
           <a
             onClick={() => handleSetPermission(record)}
-            style={{ color: '#000' }}
+            style={{ marginRight: 12, color: '#000' }}
           >
             设置权限
           </a>

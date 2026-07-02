@@ -24,4 +24,8 @@ export default {
   deleteMenu(params: { _id: string }) {
     return post<DelParams>('/menu/deleteMenu', params);
   },
+  //搜索菜单
+  searchMenu(params?: Partial<MenuItem>) {
+    return get<MenuItem[]>('/menu/searchMenuList', params);
+  },
 };

@@ -1,10 +1,9 @@
-import React from 'react';
 import {
-  forwardRef,
   useCallback,
   useImperativeHandle,
   useState,
   useEffect,
+  type Ref,
 } from 'react';
 import { Form, Input, message, Modal, Select, TreeSelect } from 'antd';
 import type { IModalProp, IAction, IModalRef } from '@/types/modal';
@@ -12,22 +11,16 @@ import { deptApi, userApi } from '@/api';
 import type { DeptItem } from '@/types/systemManage/dept';
 import type { UserItem } from '@/types/systemManage/user';
 
-const CreateDept = forwardRef<IModalRef<DeptItem>, IModalProp>((props, ref) => {
+type CreateDeptProps = IModalProp & {
+  ref?: Ref<IModalRef<DeptItem>>;
+  deptList: DeptItem[];
+};
+
+const CreateDept = ({ ref, update, deptList }: CreateDeptProps) => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [action, setAction] = useState<IAction>('create');
-  const [deptList, setDeptList] = useState<DeptItem[]>([]);
   const [userList, setUserList] = useState<UserItem[]>([]);
-
-  //获取部门数据
-  const fetchDeptData = async () => {
-    try {
-      const res = await deptApi.getDeptList();
-      setDeptList(res.data);
-    } catch (err) {
-      console.error('Fetch Dept List Error:', err);
-    }
-  };
 
   //获取用户数据
   const fetchUserData = async () => {
@@ -40,7 +33,6 @@ const CreateDept = forwardRef<IModalRef<DeptItem>, IModalProp>((props, ref) => {
   };
 
   useEffect(() => {
-    fetchDeptData();
     fetchUserData();
   }, []);
 
@@ -51,7 +43,11 @@ const CreateDept = forwardRef<IModalRef<DeptItem>, IModalProp>((props, ref) => {
       setVisible(true);
       setAction(type);
       if (type == 'edit' && data) {
-        form.setFieldsValue(data);
+        const isRoot = data.parentId === '0';
+        form.setFieldsValue({
+          ...data,
+          parentId: isRoot ? undefined : data.parentId,
+        });
       } else {
         form.resetFields();
       }
@@ -63,7 +59,7 @@ const CreateDept = forwardRef<IModalRef<DeptItem>, IModalProp>((props, ref) => {
     return {
       open,
     };
-  });
+  }, [open]);
 
   //================================================操作函数=============================================
   //菜单提交
@@ -78,6 +74,8 @@ const CreateDept = forwardRef<IModalRef<DeptItem>, IModalProp>((props, ref) => {
         message.success(res.message);
       }
     }
+    handleCancle();
+    update();
   };
 
   //取消弹窗
@@ -134,6 +132,6 @@ const CreateDept = forwardRef<IModalRef<DeptItem>, IModalProp>((props, ref) => {
       </Form>
     </Modal>
   );
-});
+};
 
 export default CreateDept;

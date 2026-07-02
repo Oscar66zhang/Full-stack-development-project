@@ -8,8 +8,8 @@ import type {
 
 export default {
   //获取部门列表
-  getDeptList() {
-    return get<DeptItem[]>('/dept/getDeptList');
+  getDeptList(params?: Partial<DeptItem>) {
+    return get<DeptItem[]>('/dept/getDeptList', params);
   },
   //编辑部门列表
   editDepList(data: EditParams) {
@@ -20,7 +20,7 @@ export default {
     return post<CreateParams[]>('/dept/addDept', data);
   },
   //删除部门列表
-  deleteDepList(params: { _id: DelParams }) {
+  deleteDepList(params: DelParams) {
     return post('/dept/deleteDept', params);
   },
 };
