@@ -35,8 +35,9 @@ const items: MenuItem[] = [
     getItem('菜单管理', '/system/menu'),
   ]),
   getItem('订单管理', 'sub2', <UnorderedListOutlined />, [
-    getItem('订单列表', '/order/list'),
-    getItem('订单聚合', '/order/aggregate'),
+    getItem('订单列表', '/order/orderList'),
+    getItem('司机分布', '/order/driverDist'),
+    getItem('司机列表', '/order/driverList'),
   ]),
 ];
 

@@ -20,4 +20,18 @@ module.exports = {
   Role: mongoose.model("Role", require("./systmeManage/roleModel")),
   Dept: mongoose.model("Dept", require("./systmeManage/deptModel")),
   Menu: mongoose.model("Menu", require("./systmeManage/menuModel")),
+
+  //订单模块
+  OrderList: mongoose.model(
+    "OrderList",
+    require("./orderManage/orderListModel"),
+  ),
+  DriverList: mongoose.model(
+    "DriverList",
+    require("./orderManage/driverListModel"),
+  ),
+  DriverDist: mongoose.model(
+    "DriverDist",
+    require("./orderManage/driverDistModel"),
+  ),
 };

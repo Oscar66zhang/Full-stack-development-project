@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Layout from '../layout';
 import { systemManageRoutes } from './modules/systemManage';
+import { orderManageRoutes } from './modules/orderManage';
 import Error403 from '@/pages/403';
 import Error404 from '@/pages/404';
 
@@ -10,13 +11,11 @@ export const routes = [
     element: <Layout />,
     children: [
       ...systemManageRoutes,
+      ...orderManageRoutes,
       { path: '/', element: <Navigate to="/system/user" replace /> },
-      { path: '*', element: <Error404 /> },
-      {
-        path: '/404',
-        element: <Error404 />,
-      },
+      { path: '/404', element: <Error404 /> },
       { path: '/403', element: <Error403 /> },
+      { path: '*', element: <Error404 /> },
     ],
   },
 ];
