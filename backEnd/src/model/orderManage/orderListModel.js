@@ -10,6 +10,7 @@ const routeSchema = new mongoose.Schema(
 );
 
 const orderListSchema = new mongoose.Schema({
+  orderId: { type: String, required: true, unique: true, index: true },
   cityName: { type: String, required: true }, // 城市名称
   userName: { type: String, required: true }, // 用户名称
   mobile: { type: Number, default: "" }, // 用户手机号
@@ -28,6 +29,12 @@ const orderListSchema = new mongoose.Schema({
   createTime: { type: Date, default: Date.now }, // 创建时间
   remark: { type: String, default: "" }, // 备注
   ...baseModel,
+});
+
+orderListSchema.pre("validate", function () {
+  if (!this.orderId) {
+    this.orderId = this._id.toString();
+  }
 });
 
 module.exports = orderListSchema;

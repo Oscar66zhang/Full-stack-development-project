@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 
 /** 弹窗操作类型：新增 / 编辑 / 删除 */
 export type IAction = 'create' | 'edit' | 'delete';
@@ -21,5 +21,6 @@ export interface IDetailRef {
 
 /** 详情页 props 类型 */
 export interface IDetailProp {
+  mRef?: Ref<IDetailRef>;
   children?: ReactNode;
 }

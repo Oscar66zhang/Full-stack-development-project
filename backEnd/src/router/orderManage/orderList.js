@@ -18,6 +18,13 @@ router.get(
   orderListController.searchOrderList,
 );
 
+// 获取订单详情
+router.get(
+  "/order/getOrderDetail/:orderId",
+  verifyToken(false),
+  orderListController.getOrderDetail,
+);
+
 // 导出订单
 router.get(
   "/order/exportOrderList",
@@ -30,6 +37,20 @@ router.post(
   "/order/createOrderList",
   verifyToken(false),
   orderListController.createOrderList,
+);
+
+// 删除订单
+router.post(
+  "/order/deleteOrderList/:_id",
+  verifyToken(false),
+  orderListController.deleteOrderList,
+);
+
+// 更新订单打点
+router.post(
+  "/order/updateOrderRoute",
+  verifyToken(false),
+  orderListController.updateOrderRoute,
 );
 
 module.exports = router;

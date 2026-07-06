@@ -6,6 +6,7 @@ import type { IModalRef } from '@/types/modal';
 import { deptApi } from '@/api/systemManage';
 import CreateDept from './CreateDept';
 import { buildTree, getAllTreeKeys } from '@/utils/tree';
+import { formatDate } from '@/utils/format';
 
 const DepList = () => {
   const [form] = Form.useForm();
@@ -66,11 +67,13 @@ const DepList = () => {
       title: '更新时间',
       dataIndex: 'updateTime',
       key: 'updateTime',
+      render: updateTime => formatDate(updateTime),
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render: createTime => formatDate(createTime),
     },
     {
       title: '操作',

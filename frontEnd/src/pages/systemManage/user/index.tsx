@@ -6,6 +6,7 @@ import { userApi } from '@/api/systemManage';
 import CreateUser from './CreateUser';
 import type { UserItem, UserParams } from '@/types/systemManage/user';
 import type { IModalRef } from '@/types/modal';
+import { formatDate } from '@/utils/format';
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>['rowSelection'];
@@ -114,6 +115,7 @@ const UserList: React.FC = () => {
       title: 'Register Time',
       dataIndex: 'createAt',
       key: 'createAt',
+      render: createAt => formatDate(createAt),
     },
     {
       title: 'Operation',

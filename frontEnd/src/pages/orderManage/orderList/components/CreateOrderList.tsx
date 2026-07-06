@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import {
   Form,
   Input,
@@ -125,6 +120,12 @@ const CreateOrderList = forwardRef<IModalRef<OrderItem>, CreateOrderListProps>(
         onCancel={handleCancel}
       >
         <Form
+          initialValues={{
+            cityName: cityOptions[0]?.value,
+            vehicleName: vehicleOptions[0]?.value,
+            payType: payTypeOptions[0]?.value,
+            state: orderStateOptions[0]?.value,
+          }}
           form={form}
           layout="horizontal"
           labelAlign="right"
@@ -165,7 +166,16 @@ const CreateOrderList = forwardRef<IModalRef<OrderItem>, CreateOrderListProps>(
             </Col>
 
             <Col span={12}>
-              <Form.Item name="mobile" label="手机号">
+              <Form.Item
+                name="mobile"
+                label="手机号"
+                rules={[
+                  {
+                    pattern: /^1[3-9]\d{9}$/,
+                    message: '请输入正确的手机号',
+                  },
+                ]}
+              >
                 <Input placeholder="请输入下单手机号" />
               </Form.Item>
             </Col>
@@ -189,6 +199,7 @@ const CreateOrderList = forwardRef<IModalRef<OrderItem>, CreateOrderListProps>(
             <Col span={12}>
               <Form.Item name="orderAmount" label="下单金额">
                 <InputNumber
+                  min={0}
                   style={{ width: '100%' }}
                   placeholder="请输入下单金额"
                 />
@@ -198,6 +209,7 @@ const CreateOrderList = forwardRef<IModalRef<OrderItem>, CreateOrderListProps>(
             <Col span={12}>
               <Form.Item name="userPayAmount" label="支付金额">
                 <InputNumber
+                  min={0}
                   style={{ width: '100%' }}
                   placeholder="请输入支付金额"
                 />
@@ -223,6 +235,7 @@ const CreateOrderList = forwardRef<IModalRef<OrderItem>, CreateOrderListProps>(
                 rules={[{ required: true, message: '请输入司机金额' }]}
               >
                 <InputNumber
+                  min={0}
                   style={{ width: '100%' }}
                   placeholder="请输入司机金额"
                 />

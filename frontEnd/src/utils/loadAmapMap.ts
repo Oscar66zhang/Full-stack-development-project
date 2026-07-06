@@ -2,6 +2,14 @@ import AMapLoader from '@amap/amap-jsapi-loader';
 
 let loadingPromise: Promise<any> | null = null;
 
+const amapPlugins = [
+  'AMap.Scale',
+  'AMap.ToolBar',
+  'AMap.MarkerCluster',
+  'AMap.Geocoder',
+  'AMap.Driving',
+];
+
 declare global {
   interface Window {
     AMap?: any;
@@ -12,7 +20,10 @@ declare global {
 }
 
 export async function loadAmapMap() {
-  if (window.AMap) return window.AMap;
+  if (window.AMap) {
+    await loadPlugins(window.AMap);
+    return window.AMap;
+  }
   if (loadingPromise) return loadingPromise;
 
   loadingPromise = (async () => {
@@ -32,11 +43,31 @@ export async function loadAmapMap() {
     const AMap = await AMapLoader.load({
       key,
       version: '2.0',
-      plugins: ['AMap.Scale', 'AMap.ToolBar', 'AMap.MarkerCluster'],
+      plugins: amapPlugins,
     });
+
+    await loadPlugins(AMap);
 
     return AMap;
   })();
 
   return loadingPromise;
+}
+
+function loadPlugins(AMap: any) {
+  return new Promise<void>((resolve) => {
+    if (!AMap?.plugin) {
+      resolve();
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      resolve();
+    }, 3000);
+
+    AMap.plugin(amapPlugins, () => {
+      window.clearTimeout(timer);
+      resolve();
+    });
+  });
 }

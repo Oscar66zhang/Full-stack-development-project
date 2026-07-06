@@ -2,10 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { rolesApi } from '@/api/';
 import {
   Button,
-  Flex,
   Space,
   Table,
-  Tag,
   Form,
   Input,
   Modal,
@@ -16,6 +14,7 @@ import type { RoleItem } from '@/types/systemManage/roles';
 import CreateRole from './CreateRole';
 import SetPermission from './SetPermission';
 import type { IModalRef } from '@/types/modal';
+import { formatDate } from '@/utils/format';
 
 const RoleList = () => {
   const [form] = Form.useForm();
@@ -48,11 +47,13 @@ const RoleList = () => {
       title: '更新时间',
       dataIndex: 'updateTime',
       key: 'updateTime',
+      render: updateTime => formatDate(updateTime),
     },
     {
       title: '创建时间',
       key: 'createTime',
       dataIndex: 'createTime',
+      render: createTime => formatDate(createTime),
     },
     {
       title: '操作',

@@ -16,6 +16,7 @@ import { menuApi } from '@/api';
 import type { IModalRef } from '@/types/modal';
 import CreateMenu from './CreateMenu';
 import { buildTree, getAllTreeKeys } from '@/utils/tree';
+import { formatDate } from '@/utils/format';
 
 const MenuList = () => {
   const [form] = Form.useForm();
@@ -106,6 +107,7 @@ const MenuList = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render: createTime => formatDate(createTime),
     },
     {
       title: '操作',
