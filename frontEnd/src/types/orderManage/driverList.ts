@@ -31,6 +31,7 @@ export interface DriverItem {
   rating: number; // 司机评分
   driverScore: number; // 司机行为分
   pushOrderCount: number; // 昨日推单数
+  age: number; // 司机年龄
   orderCompleteCount: number; // 昨日完单数
   createTime: string; // 创建时间
 }

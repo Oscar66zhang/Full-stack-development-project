@@ -79,6 +79,7 @@ const CreateDriverList = forwardRef<IModalRef<DriverItem>, IModalProp>(
             driverScore: data.driverScore,
             pushOrderCount: data.pushOrderCount,
             orderCompleteCount: data.orderCompleteCount,
+            age: data.age,
             createTime: dayjs(data.createTime),
           });
         } else {
@@ -148,6 +149,7 @@ const CreateDriverList = forwardRef<IModalRef<DriverItem>, IModalProp>(
             driverScore: 100,
             pushOrderCount: 0,
             orderCompleteCount: 0,
+            age: 30,
           }}
         >
           <Row>
@@ -382,6 +384,22 @@ const CreateDriverList = forwardRef<IModalRef<DriverItem>, IModalProp>(
           </Row>
 
           <Row>
+            <Col span={12}>
+              <Form.Item
+                label="司机年龄"
+                name="age"
+                rules={[{ required: true, message: '请输入司机年龄' }]}
+              >
+                <InputNumber
+                  min={18}
+                  max={70}
+                  precision={0}
+                  style={{ width: '100%' }}
+                  placeholder="请输入司机年龄"
+                />
+              </Form.Item>
+            </Col>
+
             <Col span={12}>
               <Form.Item
                 label="加入时间"

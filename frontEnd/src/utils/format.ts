@@ -55,3 +55,19 @@ export const formatMobile = (value?: string | number, defaultValue = '-') => {
 
 // 如果你已经写成 formateMobile，也可以暂时保留这个别名
 export const formateMobile = formatMobile;
+
+// 格式化数字（千分位）
+export const formatNum = (value?: number, defaultValue = '0') => {
+  if (value === undefined || value === null) return defaultValue;
+  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+// 格式化状态
+export const formatState = (state?: number, defaultValue = '-') => {
+  const map: Record<number, string> = {
+    0: '禁用',
+    1: '正常',
+    2: '待审核',
+  };
+  return state !== undefined ? map[state] ?? defaultValue : defaultValue;
+};

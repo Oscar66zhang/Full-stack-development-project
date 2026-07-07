@@ -21,6 +21,7 @@ const driverListSchema = new mongoose.Schema({
   rating: { type: Number, default: 0 }, // 司机评分
   driverScore: { type: Number, default: 0 }, // 司机行为分
   pushOrderCount: { type: Number, default: 0 }, // 昨日推单数
+  age: { type: Number, default: 30 }, // 司机年龄
   orderCompleteCount: { type: Number, default: 0 }, // 昨日完单数
   createTime: { type: Date, default: Date.now }, // 创建时间
   ...baseModel,
