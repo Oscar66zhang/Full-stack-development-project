@@ -34,3 +34,8 @@ export interface DriverItem {
   orderCompleteCount: number; // 昨日完单数
   createTime: string; // 创建时间
 }
+
+/** 创建司机列表 - 请求参数 */
+export type CreateDriverParams = Omit<DriverItem, 'createTime'> & {
+  createTime?: string; // 加入时间
+};

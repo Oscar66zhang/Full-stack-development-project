@@ -12,6 +12,7 @@ const menuRouter = require("./systemManage/menu");
 
 //订单模块路由
 const orderListRouter = require("./orderManage/orderList");
+const driverLisrRouter = require("./orderManage/driverList");
 
 //==========================================注册子路由=======================================================================
 
@@ -29,5 +30,6 @@ router.use(menuRouter.routes(), menuRouter.allowedMethods());
 
 //订单模块
 router.use(orderListRouter.routes(), orderListRouter.allowedMethods());
+router.use(driverLisrRouter.routes(), driverLisrRouter.allowedMethods());
 
 module.exports = router;
