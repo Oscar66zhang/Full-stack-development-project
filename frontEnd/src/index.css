@@ -1,17 +1,25 @@
 @import 'tailwindcss';
 
+/* 面包屑分隔符 */
 .ant-breadcrumb-separator {
-  color: #000 !important;
+  color: var(--ant-color-text-quaternary, #000);
 }
 
+/* 搜索表单 */
 .search-form {
-  @apply p-4 bg-white rounded-lg;
+  @apply p-4 rounded-lg;
+  background-color: var(--ant-color-bg-container, #fff);
+  color: var(--ant-color-text, #000);
 }
 
+/* 表格容器 */
 .base-table {
-  @apply bg-white rounded-md text-black;
+  @apply rounded-md;
+  background-color: var(--ant-color-bg-container, #fff);
+  color: var(--ant-color-text, #000);
 }
 
+/* 表头包装器 */
 .header-wrapper {
   @apply flex justify-between items-center p-4;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type Key } from 'react';
-import { Button, Form, Input, Modal, Space, Table, message } from 'antd';
+import { Button, Form, Input, Modal, Space, Table, message, theme } from 'antd';
 import type { DeptItem } from '@/types/systemManage/dept';
 import type { TableProps } from 'antd';
 import type { IModalRef } from '@/types/modal';
@@ -12,6 +12,7 @@ const DepList = () => {
   const [form] = Form.useForm();
   const [deptList, setDeptList] = useState<DeptItem[]>([]);
   const deptModalRef = useRef<IModalRef<DeptItem>>(null);
+  const { token } = theme.useToken();
 
   //展开所有节点
   const [expandedRowKeys, setExpandedRowKeys] = useState<Key[]>([]);
@@ -82,21 +83,21 @@ const DepList = () => {
         <Space size={30}>
           <a
             onClick={() => handleCreate()}
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
           >
             新增
           </a>
 
           <a
             onClick={() => handleEdit(record)}
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
           >
             编辑
           </a>
 
           <a
             onClick={() => handleDelete(record._id)}
-            style={{ color: '#f5222d' }}
+            style={{ color: token.colorError }}
           >
             删除
           </a>

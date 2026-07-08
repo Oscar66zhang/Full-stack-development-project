@@ -8,6 +8,7 @@ import {
   Input,
   Modal,
   message,
+  theme,
 } from 'antd';
 import type { TableColumnsType } from 'antd';
 import type { RoleItem } from '@/types/systemManage/roles';
@@ -21,6 +22,7 @@ const RoleList = () => {
   const [roleList, setRoleList] = React.useState<RoleItem[]>([]);
   const roleModalRef = useRef<IModalRef<RoleItem>>(null);
   const permissionRef = useRef<IModalRef<RoleItem>>(null);
+  const { token } = theme.useToken();
 
   //获取角色列表
   const getroleList = async () => {
@@ -62,17 +64,17 @@ const RoleList = () => {
         <Space size={30}>
           <a
             onClick={() => handleEdit(record)}
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
           >
             编辑
           </a>
           <a
             onClick={() => handleSetPermission(record)}
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
           >
             设置权限
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: '#f5222d' }}>
+          <a onClick={() => handleDelete(record)} style={{ color: token.colorError }}>
             删除
           </a>
         </Space>

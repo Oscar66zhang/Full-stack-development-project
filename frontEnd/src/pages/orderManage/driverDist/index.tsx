@@ -98,7 +98,10 @@ export default function DriverDist() {
   };
 
   return (
-    <div className="rounded bg-white p-3">
+    <div
+      className="rounded p-3"
+      style={{ backgroundColor: 'var(--ant-color-bg-container)' }}
+    >
       <Select
         style={{
           width: 112,
@@ -113,7 +116,7 @@ export default function DriverDist() {
         <div
           id="clusterMap"
           className="w-[95%]"
-           style={{ height: 'calc(100vh - 240px)' }}
+          style={{ height: 'calc(100vh - 240px)' }}
         />
       </div>
     </div>

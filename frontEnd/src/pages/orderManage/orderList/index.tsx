@@ -12,6 +12,7 @@ import {
   Button,
   Tag,
   Modal,
+  theme,
 } from 'antd';
 import CreateOrderList from './components/CreateOrderList';
 import type { IModalRef } from '@/types/modal';
@@ -31,6 +32,7 @@ const OrderList = () => {
   const detailRef = useRef<{ open: (orderId: string) => void }>(null);
   const markerModalRef = useRef<OrderMarkerModalRef>(null);
   const routeModalRef = useRef<OrderRouteModalRef>(null);
+  const { token } = theme.useToken();
 
   //=======================================获取数据====================================
   const fetchOrderListData = async () => {
@@ -123,14 +125,14 @@ const OrderList = () => {
       render: (_, record) => (
         <Space>
           <Button
-            style={{ marginRight: 3, color: '#000' }}
+            style={{ marginRight: 3, color: token.colorText }}
             type="link"
             onClick={() => handleDetail(record.orderId)}
           >
             详情
           </Button>
           <Button
-            style={{ marginRight: 3, color: '#000' }}
+            style={{ marginRight: 3, color: token.colorText }}
             type="link"
             onClick={() => handleMarker(record)}
           >
@@ -138,7 +140,7 @@ const OrderList = () => {
           </Button>
 
           <Button
-            style={{ marginRight: 3, color: '#000' }}
+            style={{ marginRight: 3, color: token.colorText }}
             type="link"
             onClick={() => handleRoute(record)}
           >

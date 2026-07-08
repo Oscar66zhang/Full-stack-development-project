@@ -9,6 +9,7 @@ import {
   Button,
   Select,
   Modal,
+  theme,
 } from 'antd';
 import type { TableProps } from 'antd';
 import type { MenuItem } from '@/types/systemManage/menu';
@@ -22,6 +23,7 @@ const MenuList = () => {
   const [form] = Form.useForm();
   const [menuData, setMenuData] = useState<MenuItem[]>([]);
   const menuModalRef = useRef<IModalRef<MenuItem>>(null);
+  const { token } = theme.useToken();
 
   //展开所有节点
   const [expandedRowKeys, setExpandedRowKeys] = useState<Key[]>([]);
@@ -116,17 +118,17 @@ const MenuList = () => {
         <Space size={30}>
           <a
             onClick={() => handleCreate()}
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
           >
             新增
           </a>
           <a
             onClick={() => handleEdit(record)}
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
           >
             编辑
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: '#f5222d' }}>
+          <a onClick={() => handleDelete(record)} style={{ color: token.colorError }}>
             删除
           </a>
         </Space>

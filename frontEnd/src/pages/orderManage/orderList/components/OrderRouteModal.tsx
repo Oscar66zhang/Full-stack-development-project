@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Modal, message } from 'antd';
+import { Modal, message, theme } from 'antd';
 import type { OrderItem } from '@/types/orderManage/orderList';
 import { loadAmapMap } from '@/utils/loadAmapMap';
 
@@ -19,6 +19,7 @@ const OrderRouteModal = forwardRef<OrderRouteModalRef>((_, ref) => {
   const [visible, setVisible] = useState(false);
   const [order, setOrder] = useState<OrderItem | null>(null);
   const [routeText, setRouteText] = useState('');
+  const { token } = theme.useToken();
 
   useImperativeHandle(ref, () => ({
     open: record => {
@@ -268,7 +269,7 @@ const OrderRouteModal = forwardRef<OrderRouteModalRef>((_, ref) => {
           style={{
             marginTop: 8,
             fontSize: 13,
-            color: '#666',
+            color: token.colorTextSecondary,
           }}
         >
           {routeText}

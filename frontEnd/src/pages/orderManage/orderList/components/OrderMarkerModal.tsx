@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Modal, message } from 'antd';
+import { Modal, message, theme } from 'antd';
 import type { OrderItem } from '@/types/orderManage/orderList';
 import { loadAmapMap } from '@/utils/loadAmapMap';
 import { orderListApi } from '@/api/orderManage';
@@ -44,6 +44,7 @@ const OrderMarkerModal = forwardRef<
   const [order, setOrder] = useState<OrderItem | null>(null);
   const [points, setPoints] = useState<MarkerPoint[]>([]);
   const [markerText, setMarkerText] = useState('');
+  const { token } = theme.useToken();
 
   useImperativeHandle(ref, () => ({
     open: record => {
@@ -298,7 +299,7 @@ const OrderMarkerModal = forwardRef<
           style={{
             marginBottom: 8,
             fontSize: 13,
-            color: '#666',
+            color: token.colorTextSecondary,
           }}
         >
           {markerText}
@@ -315,7 +316,7 @@ const OrderMarkerModal = forwardRef<
         style={{
           marginTop: 8,
           fontSize: 13,
-          color: '#999',
+          color: token.colorTextSecondary,
         }}
       >
         当前打点数：{points.length}

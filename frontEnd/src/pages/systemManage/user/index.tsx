@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, Table, Form, Input, Space, Select, Modal } from 'antd';
+import { Button, Table, Form, Input, Space, Select, Modal, theme } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { userApi } from '@/api/systemManage';
@@ -15,6 +15,7 @@ const UserList: React.FC = () => {
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<UserItem[]>([]);
+  const { token } = theme.useToken();
 
   const rowSelection: TableRowSelection<UserItem> = {
     selectedRowKeys,
@@ -114,12 +115,12 @@ const UserList: React.FC = () => {
       render: (_, record) => (
         <Space size={30}>
           <a
-            style={{ marginRight: 12, color: '#000' }}
+            style={{ marginRight: 12, color: token.colorText }}
             onClick={() => handleEdit(record)}
           >
             编辑
           </a>
-          <a onClick={() => handleDelete(record)} style={{ color: '#f5222d' }}>
+          <a onClick={() => handleDelete(record)} style={{ color: token.colorError }}>
             删除
           </a>
         </Space>

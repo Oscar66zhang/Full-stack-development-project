@@ -10,6 +10,7 @@ import {
   Button,
   Tag,
   Modal,
+  theme,
 } from 'antd';
 import { useState, useRef, useEffect } from 'react';
 import type { IModalRef } from '@/types/modal';
@@ -21,6 +22,7 @@ const DriverList = () => {
   const [driverList, setDriverList] = useState<DriverItem[]>([]);
   const [form] = Form.useForm();
   const driverModalRef = useRef<IModalRef<DriverItem>>(null);
+  const { token } = theme.useToken();
 
   //获取司机列表的数据
   const fetchDriverList = async () => {
@@ -133,7 +135,7 @@ const DriverList = () => {
         return (
           <Space size={3}>
             <Button
-              style={{ color: '#000' }}
+              style={{ color: token.colorText }}
               type="link"
               onClick={() => handleEditDriverList(record)}
             >
