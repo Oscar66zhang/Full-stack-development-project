@@ -7,6 +7,7 @@ const userController = require('../../controllers/systemManage/userController');
 
 router.get('/users/getUserList', verifyToken(false), userController.getUserList);
 router.get('/users/getUserById', verifyToken(false), userController.getUserById);
+router.get('/users/searchUser', verifyToken(false), userController.searchUser);
 router.post('/users/addUser', verifyToken(false), userController.addUser);
 router.post('/users/editUser', verifyToken(false), userController.editUser);
 router.post('/users/deleteUser', verifyToken(false), userController.deleteUser);

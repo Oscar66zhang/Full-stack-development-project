@@ -26,34 +26,24 @@ const UserList: React.FC = () => {
 
   const userModalRef = useRef<IModalRef<UserItem>>(null);
 
-  //获取表格数据
   const getTableData = (
     { current, pageSize }: { current: number; pageSize: number },
     formData: UserParams
   ) => {
-    return userApi.getUserInfo().then(res => {
-      const list = res.data.list;
-      const filtered = list.filter((item: UserItem) => {
-        const matchId = formData.userId
-          ? item.userId.toString().includes(formData.userId.toString())
-          : true;
-        const matchName = formData.userName
-          ? item.userName
-              .toLowerCase()
-              .includes(formData.userName.toLowerCase())
-          : true;
-        const matchState =
-          formData.state !== undefined && formData.state !== null
-            ? item.state === Number(formData.state)
-            : true;
-        return matchId && matchName && matchState;
+    return userApi
+      .getUserInfo({
+        pageNum: current,
+        size: pageSize,
+        userId: formData.userId || undefined,
+        userName: formData.userName || undefined,
+        state: formData.state,
+      })
+      .then(res => {
+        return {
+          total: res.data.total,
+          list: res.data.list,
+        };
       });
-
-      return {
-        total: filtered.length,
-        list: filtered.slice((current - 1) * pageSize, current * pageSize),
-      };
-    });
   };
 
   const { tableProps, search } = useAntdTable(getTableData, {
@@ -242,12 +232,16 @@ const UserList: React.FC = () => {
           </div>
         </div>
 
-        <Table
-          rowKey="_id"
+        <Table<UserItem>
+          rowKey="userId"
           rowSelection={rowSelection}
           columns={columns}
           {...tableProps}
           bordered
+          pagination={{
+            ...tableProps.pagination,
+            showTotal: total => `共 ${total} 条`,
+          }}
         />
       </div>
 

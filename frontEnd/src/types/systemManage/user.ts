@@ -1,7 +1,16 @@
 // ============ 分页 ============
 export interface UserPageParams {
   pageNum: number;
-  pageSize: number;
+  size: number;
+}
+
+// ============ 查询列表 ============
+export interface UserQueryParams {
+  pageNum: number;
+  size: number;
+  userId?: number;
+  userName?: string;
+  state?: number;
 }
 
 // ============ 用户类型 ============
@@ -19,7 +28,7 @@ export interface UserItem {
   createId: number;
   deptName: string;
   userImg: string;
-  createAt?:string
+  createAt?: string;
 }
 
 export interface UserParams extends UserPageParams {

@@ -3,12 +3,23 @@ const { createToken } = require("../../util/jwt");
 
 //获取用户
 exports.getUserList = async (ctx) => {
-  const { userName, userEmail, deptName, state, role } = ctx.query;
-  const page = ctx.query.page || 1;
+  const { userId, userName, userEmail, deptName, state, role } = ctx.query;
+  const pageNum = ctx.query.pageNum || 1;
   const size = ctx.query.size || 10;
 
   //构建查询添加
   const query = {};
+  if (userId) {
+    const parsedUserId = Number(userId);
+
+    if (Number.isNaN(parsedUserId)) {
+      ctx.status = 400;
+      ctx.body = { code: 400, message: "用户ID必须是数字" };
+      return;
+    }
+
+    query.userId = parsedUserId;
+  }
   if (userName) query.userName = userName;
   if (userEmail) query.userEmail = userEmail;
   if (deptName) query.deptName = deptName;
@@ -17,7 +28,7 @@ exports.getUserList = async (ctx) => {
 
   const total = await User.countDocuments(query);
   const list = await User.find(query)
-    .skip((page - 1) * size)
+    .skip((pageNum - 1) * size)
     .limit(Number(size))
     .sort({ userId: 1 });
   ctx.body = { code: 200, data: { list, total } };
@@ -140,4 +151,27 @@ exports.getUserById = async (ctx) => {
   const { userId } = ctx.query;
   const user = await User.findById(userId);
   ctx.body = { code: 200, data: user };
+};
+
+//搜索用户
+exports.searchUser = async (ctx) => {
+  const { keyword } = ctx.query;
+
+  if (!keyword) {
+    ctx.status = 400;
+    ctx.body = { code: 400, message: "搜索关键词不能为空" };
+    return;
+  }
+
+  //模糊搜索匹配 userName、userId、state
+  const query = {
+    $or: [
+      { userName: { $regex: keyword, $options: "i" } },
+      { userId: { $regex: keyword, $options: "i" } },
+      { state: { $regex: keyword, $options: "i" } },
+    ],
+  };
+
+  const list = await User.find(query).sort({ userId: 1 });
+  ctx.body = { code: 200, data: { list, total: list.length } };
 };
