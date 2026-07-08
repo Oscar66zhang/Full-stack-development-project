@@ -6,3 +6,4 @@ node_modules/
 .env
 .env.development
 .env.production
+review.md

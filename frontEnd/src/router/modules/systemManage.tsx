@@ -1,7 +1,10 @@
-import Dept from '@/pages/systemManage/dept';
-import Menu from '@/pages/systemManage/menu';
-import Role from '@/pages/systemManage/role';
-import User from '@/pages/systemManage/user';
+import { lazy } from 'react';
+
+// 懒加载页面组件
+const Dept = lazy(() => import('@/pages/systemManage/dept'));
+const Menu = lazy(() => import('@/pages/systemManage/menu'));
+const Role = lazy(() => import('@/pages/systemManage/role'));
+const User = lazy(() => import('@/pages/systemManage/user'));
 
 export const systemManageRoutes = [
   { path: 'system/dept', element: <Dept /> },

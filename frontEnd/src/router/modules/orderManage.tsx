@@ -1,9 +1,11 @@
-import DriverList from '@/pages/orderManage/driverList';
-import DriverDist from '@/pages/orderManage/driverDist';
-import OrderList from '@/pages/orderManage/orderList';
+import { lazy } from 'react';
+
+const OrderList = lazy(() => import('@/pages/orderManage/orderList'));
+const DriverDist = lazy(() => import('@/pages/orderManage/driverDist'));
+const DriverList = lazy(() => import('@/pages/orderManage/driverList'));
 
 export const orderManageRoutes = [
-  { path: 'order/driverList', element: <DriverList /> },
-  { path: 'order/driverDist', element: <DriverDist /> },
   { path: 'order/orderList', element: <OrderList /> },
+  { path: 'order/driverDist', element: <DriverDist /> },
+  { path: 'order/driverList', element: <DriverList /> },
 ];

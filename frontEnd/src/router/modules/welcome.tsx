@@ -1,4 +1,6 @@
-import Welcome from '@/pages/welcome/index';
+import { lazy } from 'react';
+
+const Welcome = lazy(() => import('@/pages/welcome/index'));
 
 export const welcomeRoutes = [
   {

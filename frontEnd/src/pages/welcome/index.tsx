@@ -1,6 +1,9 @@
 export default function Welcome() {
   return (
-    <div className="flex justify-center items-center gap-30 bg-white rounded h-[calc(100vh-170px)]">
+    <div
+      className="flex justify-center items-center gap-30 rounded h-[calc(100vh-170px)]"
+      style={{ backgroundColor: 'var(--ant-color-bg-container)' }}
+    >
       <div className="relative -bottom-10">
         <div className="text-[30px] leading-10.5 text-gray-800 dark:text-gray-200">
           欢迎体验

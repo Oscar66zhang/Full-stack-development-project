@@ -1,5 +1,5 @@
-import DashBoard from '@/pages/dashBoard';
+import { lazy } from 'react';
 
-export const dashBoardRoutes = [
-  { path: 'dashboard', element: <DashBoard /> },
-];
+const Dashboard = lazy(() => import('@/pages/dashBoard'));
+
+export const dashBoardRoutes = [{ path: 'dashboard', element: <Dashboard /> }];
