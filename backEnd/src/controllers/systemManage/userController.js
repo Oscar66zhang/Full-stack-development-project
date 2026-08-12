@@ -1,5 +1,5 @@
 const { User } = require("../../model");
-const { createToken } = require("../../util/jwt");
+const { hashPassword } = require("../../util/password");
 
 //获取用户
 exports.getUserList = async (ctx) => {
@@ -63,6 +63,13 @@ exports.addUser = async (ctx) => {
     return;
   }
 
+  const existingUserName = await User.findOne({ userName });
+  if (existingUserName) {
+    ctx.status = 400;
+    ctx.body = { code: 400, message: "该用户名已存在" };
+    return;
+  }
+
   //获取userId并+1
   const maxUser = await User.findOne().sort({ userId: -1 });
   const userId = maxUser ? maxUser.userId + 1 : 1001;
@@ -117,7 +124,8 @@ exports.editUser = async (ctx) => {
     return;
   }
 
-  const { userId: id, ...updateData } = ctx.request.body;
+  const { userId: id, password, ...updateData } = ctx.request.body;
+  if (password) updateData.password = hashPassword(password);
   await User.findOneAndUpdate({ userId: id }, updateData);
   ctx.body = { code: 200, message: "修改成功" };
 };

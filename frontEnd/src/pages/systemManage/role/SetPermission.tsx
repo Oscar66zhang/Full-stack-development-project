@@ -32,7 +32,7 @@ const SetPermission = forwardRef<IModalRef<RoleItem>, IModalProp>(
     // 打开弹窗的方法
     // type：表示当前操作类型，比如 create / edit / delete
     // data：编辑时传入的当前行数据
-    const open = useCallback((type: IAction, data?: RoleItem) => {
+    const open = useCallback((_type: IAction, data?: RoleItem) => {
       setVisible(true);
       setRoleInfo(data);
       setCheckedKeys(data?.permissionList?.checkedKeys || []);

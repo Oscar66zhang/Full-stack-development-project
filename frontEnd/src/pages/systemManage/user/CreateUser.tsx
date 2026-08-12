@@ -1,10 +1,4 @@
-import {
-  useState,
-  useImperativeHandle,
-  forwardRef,
-  useCallback,
-  useEffect,
-} from 'react';
+import { useState, useImperativeHandle, forwardRef, useCallback, useEffect } from 'react';
 import { Modal, Form, Input, Select, message, TreeSelect, Upload } from 'antd';
 import type { IModalProp, IAction, IModalRef } from '@/types/modal';
 import type { UserItem } from '@/types/systemManage/user';
@@ -61,7 +55,7 @@ const CreateUser = forwardRef<IModalRef<UserItem>, IModalProp>((props, ref) => {
       }
     },
     // form 是依赖项，form 变化时重新生成 open 方法
-    [form]
+    [form],
   );
 
   // 通过 useImperativeHandle 向父组件暴露方法
@@ -113,9 +107,7 @@ const CreateUser = forwardRef<IModalRef<UserItem>, IModalProp>((props, ref) => {
   };
 
   // 上传后，图片处理
-  const handleChange: UploadProps['onChange'] = (
-    info: UploadChangeParam<UploadFile>
-  ) => {
+  const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
@@ -172,6 +164,24 @@ const CreateUser = forwardRef<IModalRef<UserItem>, IModalProp>((props, ref) => {
           rules={[{ required: true, message: '请输入邮箱' }]}
         >
           <Input placeholder="请输入用户邮箱"></Input>
+        </Form.Item>
+
+        <Form.Item
+          label={action === 'create' ? '登录密码' : '重置密码'}
+          name="password"
+          rules={[
+            {
+              required: action === 'create',
+              message: '请输入登录密码',
+            },
+            { min: 6, message: '密码至少需要 6 位' },
+          ]}
+          extra={action === 'edit' ? '留空则保持原密码不变' : undefined}
+        >
+          <Input.Password
+            placeholder={action === 'create' ? '请输入登录密码' : '如需重置，请输入新密码'}
+            autoComplete="new-password"
+          />
         </Form.Item>
 
         <Form.Item
@@ -261,11 +271,7 @@ const CreateUser = forwardRef<IModalRef<UserItem>, IModalProp>((props, ref) => {
               />
             ) : (
               <div>
-                {loading ? (
-                  <LoadingOutlined rev={undefined} />
-                ) : (
-                  <PlusOutlined rev={undefined} />
-                )}
+                {loading ? <LoadingOutlined rev={undefined} /> : <PlusOutlined rev={undefined} />}
                 <div style={{ marginTop: 5 }}>上传头像</div>
               </div>
             )}

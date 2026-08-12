@@ -1,6 +1,8 @@
 const Router = require("@koa/router");
 const router = new Router({ prefix: "/api" }); //主路由
 
+const authRouter = require("./auth");
+
 //面板模块路由
 const dashboardRouter = require("./dashBoard/dashboard");
 
@@ -20,6 +22,7 @@ const driverLisrRouter = require("./orderManage/driverList");
 // allowedMethods() 主要负责处理 请求方法不对 的情况
 
 //面板模块
+router.use(authRouter.routes(), authRouter.allowedMethods());
 router.use(dashboardRouter.routes(), dashboardRouter.allowedMethods());
 
 //用户模块

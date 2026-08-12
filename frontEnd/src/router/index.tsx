@@ -5,16 +5,21 @@ import { systemManageRoutes } from './modules/systemManage';
 import { orderManageRoutes } from './modules/orderManage';
 import { dashBoardRoutes } from './modules/dashboardManage';
 import { welcomeRoutes } from './modules/welcome';
+import AuthGuard from './AuthGuard';
 
 // 懒加载 Error 页面
 const Error403Component = lazy(() => import('@/pages/403'));
 const Error404Component = lazy(() => import('@/pages/404'));
+const LoginComponent = lazy(() => import('@/pages/login'));
+const RegisterComponent = lazy(() => import('@/pages/login/components/Register'));
 
 //Loading组件
 const Loading: React.FC = () => {
-  <div className="flex justify-center items-center h-[calc(100vh-200px)]">
-    <span className="text-gray-500">Loading...</span>
-  </div>;
+  return (
+    <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+      <span className="text-gray-500">Loading...</span>
+    </div>
+  );
 };
 
 // 包装懒加载组件
@@ -24,8 +29,28 @@ const LazyElement: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 export const routes = [
   {
+    path: '/login',
+    element: (
+      <LazyElement>
+        <LoginComponent />
+      </LazyElement>
+    ),
+  },
+  {
+    path: '/register',
+    element: (
+      <LazyElement>
+        <RegisterComponent />
+      </LazyElement>
+    ),
+  },
+  {
     path: '/',
-    element: <Layout />,
+    element: (
+      <AuthGuard>
+        <Layout />
+      </AuthGuard>
+    ),
     children: [
       ...dashBoardRoutes,
       ...systemManageRoutes,

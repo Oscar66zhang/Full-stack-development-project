@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const md5 = require("../../util/md5");
+const { hashPassword } = require("../../util/password");
 
 const baseModel = require("../baseModel");
 
@@ -7,6 +7,15 @@ const userSchema = new mongoose.Schema({
   userId: { type: Number, required: true }, // 用户ID
   userName: { type: String, required: true }, // 用户名
   userEmail: { type: String, required: true }, // 邮箱
+  password: {
+    type: String,
+    select: false,
+    default: "123456",
+    set: (value) => {
+      if (!value || String(value).startsWith("scrypt$")) return value;
+      return hashPassword(value);
+    },
+  },
   userImg: { type: String }, // 头像（可选）
   role: { type: Number, required: false }, // 角色：0=超级管理员 1=管理员 2=普通用户
   roleList: { type: String, required: false }, // 角色列表（多个角色用逗号分隔）

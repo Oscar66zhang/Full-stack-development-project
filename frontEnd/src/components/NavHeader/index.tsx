@@ -1,16 +1,24 @@
-import React from 'react';
-import { MenuFoldOutlined, FullscreenOutlined, FullscreenExitOutlined, SunOutlined, MoonOutlined, UserOutlined, SettingOutlined, PoweroffOutlined } from '@ant-design/icons';
-import { Layout, theme, Dropdown, type MenuProps } from 'antd';
-import { Breadcrumb } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { authApi } from '@/api';
 import { useStore } from '@/store';
-
-const { Header } = Layout;
+import {
+  FullscreenExitOutlined,
+  FullscreenOutlined,
+  MenuFoldOutlined,
+  MoonOutlined,
+  PoweroffOutlined,
+  SettingOutlined,
+  SunOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Breadcrumb, Dropdown, theme, type MenuProps } from 'antd';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavHeader: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isFullscreen, setIsFullscreen] = React.useState(false);
-  const { isDark, updateTheme } = useStore();
+  const { isDark, updateTheme, userInfo, clearAuth } = useStore();
 
   const routeMap: Record<string, { title: string; parent?: string }> = {
     '/welcome': { title: '首页' },
@@ -93,6 +101,18 @@ const NavHeader: React.FC = () => {
     },
   ];
 
+  const handleUserMenuClick: MenuProps['onClick'] = async ({ key }) => {
+    if (key === 'logout') {
+      try {
+        await authApi.logout();
+      } catch {
+        // 忽略登出接口错误，确保本地状态清除
+      }
+      clearAuth();
+      navigate('/login', { replace: true });
+    }
+  };
+
   const {
     token: { colorBgContainer, colorText },
   } = theme.useToken();
@@ -108,37 +128,39 @@ const NavHeader: React.FC = () => {
       {/* 左侧 */}
       <div className="flex items-center" style={{ padding: 20 }}>
         <MenuFoldOutlined />
-        <Breadcrumb
-          items={getBreadcrumbItems() as any}
-          style={{ marginLeft: 10 }}
-        />
+        <Breadcrumb items={getBreadcrumbItems()} style={{ marginLeft: 10 }} />
       </div>
 
       {/* 右侧 */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4" style={{ padding: 20 }}>
         {/* 全屏切换 */}
-        <span
-          onClick={toggleFullscreen}
-          className="cursor-pointer text-base hover:text-[#eb6c00]"
-        >
+        <span onClick={toggleFullscreen} className="cursor-pointer text-base hover:text-[#eb6c00]">
           {isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
         </span>
 
         {/* 主题切换 */}
-        <span
-          onClick={toggleTheme}
-          className="cursor-pointer text-base hover:text-[#eb6c00]"
-        >
+        <span onClick={toggleTheme} className="cursor-pointer text-base hover:text-[#eb6c00]">
           {isDark ? <SunOutlined /> : <MoonOutlined />}
         </span>
 
         {/* 用户下拉菜单 */}
-        <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+        <Dropdown
+          menu={{ items: userMenuItems, onClick: handleUserMenuClick }}
+          placement="bottomRight"
+        >
           <div className="flex items-center gap-2 cursor-pointer">
             <div className="w-8 h-8 rounded-full bg-[#eb6c00] text-white flex items-center justify-center">
-              <UserOutlined />
+              {userInfo.userImg ? (
+                <img
+                  className="h-full w-full rounded-full object-cover"
+                  src={userInfo.userImg}
+                  alt={userInfo.userName}
+                />
+              ) : (
+                <UserOutlined />
+              )}
             </div>
-            <span className="text-sm">Admin</span>
+            <span className="text-sm">{userInfo.userName || '用户'}</span>
           </div>
         </Dropdown>
       </div>

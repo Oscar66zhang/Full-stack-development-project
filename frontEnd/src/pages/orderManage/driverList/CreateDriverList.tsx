@@ -12,11 +12,7 @@ import {
   DatePicker,
 } from 'antd';
 import type { IAction, IModalProp, IModalRef } from '@/types/modal';
-import type {
-  CreateDriverParams,
-  DriverItem,
-  DriverStatus,
-} from '@/types/orderManage/driverList';
+import type { DriverItem, DriverStatus } from '@/types/orderManage/driverList';
 import { driverListApi } from '@/api';
 import dayjs from 'dayjs';
 

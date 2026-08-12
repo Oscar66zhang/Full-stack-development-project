@@ -40,6 +40,7 @@ export interface UserParams extends UserPageParams {
 export interface UserCreateParams {
   userName: string;
   userEmail: string;
+  password?: string;
   mobile?: number;
   deptId: string;
   job?: string;

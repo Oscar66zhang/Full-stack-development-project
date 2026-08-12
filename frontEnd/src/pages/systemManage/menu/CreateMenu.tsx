@@ -1,11 +1,4 @@
-import React from 'react';
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useState,
-  useEffect,
-} from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import {
   Form,
   Input,
@@ -30,7 +23,6 @@ const CreateMenu = forwardRef<IModalRef<MenuItem>, CreateMenuProps>(
     const [form] = Form.useForm();
     const [visible, setVisible] = useState(false);
     const [action, setAction] = useState<IAction>('create');
-
 
     // 打开弹窗的方法
     // type：表示当前操作类型，比如 create / edit / delete

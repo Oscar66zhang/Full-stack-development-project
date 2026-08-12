@@ -3,15 +3,15 @@ const router = new Router();
 const { verifyToken } = require("../../util/jwt");
 const deptController = require("../../controllers/systemManage/deptController");
 
-router.get("/dept/getDeptList", verifyToken(false), deptController.getDeptList);
+router.get("/dept/getDeptList", verifyToken(), deptController.getDeptList);
 router.get(
   "/dept/searchDeptList",
-  verifyToken(false),
+  verifyToken(),
   deptController.searchDeptList,
 );
-router.get("/dept/getDeptById", verifyToken(false), deptController.getDeptById);
-router.post("/dept/addDept", verifyToken(false), deptController.addDept);
-router.post("/dept/editDept", verifyToken(false), deptController.editDept);
-router.post("/dept/deleteDept", verifyToken(false), deptController.deleteDept);
+router.get("/dept/getDeptById", verifyToken(), deptController.getDeptById);
+router.post("/dept/addDept", verifyToken(), deptController.addDept);
+router.post("/dept/editDept", verifyToken(), deptController.editDept);
+router.post("/dept/deleteDept", verifyToken(), deptController.deleteDept);
 
 module.exports = router;

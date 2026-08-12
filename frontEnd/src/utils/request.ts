@@ -5,6 +5,7 @@ import axios, {
 } from 'axios';
 import { message } from './AntdGlobal';
 import { showLoading, hideLoading } from './loading';
+import { useStore } from '@/store';
 
 interface ApiResponse<T = unknown> {
   code: number;
@@ -48,7 +49,7 @@ request.interceptors.request.use(
   (error: AxiosError) => {
     endLoading();
     return Promise.reject(error);
-  }
+  },
 );
 
 request.interceptors.response.use(
@@ -69,9 +70,11 @@ request.interceptors.response.use(
 
     switch (status) {
       case 401:
-        message.error('未授权，请重新登录');
-        localStorage.removeItem('token');
-        window.location.href = '/login';
+        message.error(errorMessage || '未授权，请重新登录');
+        useStore.getState().clearAuth();
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
         break;
       case 403:
         message.error('拒绝访问');
@@ -84,13 +87,13 @@ request.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const get = <T = unknown>(
   url: string,
   params?: object,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<ApiResponse<T>> => {
   return request.get(url, { params, ...config });
 };
@@ -98,7 +101,7 @@ export const get = <T = unknown>(
 export const post = <T = unknown>(
   url: string,
   data?: object,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<ApiResponse<T>> => {
   return request.post(url, data, config);
 };
@@ -106,7 +109,7 @@ export const post = <T = unknown>(
 export const put = <T = unknown>(
   url: string,
   data?: object,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<ApiResponse<T>> => {
   return request.put(url, data, config);
 };
@@ -114,7 +117,7 @@ export const put = <T = unknown>(
 export const del = <T = unknown>(
   url: string,
   params?: object,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<ApiResponse<T>> => {
   return request.delete(url, { params, ...config });
 };

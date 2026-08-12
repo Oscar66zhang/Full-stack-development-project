@@ -8,7 +8,7 @@ const { Content } = Layout;
 
 const LayoutPage: React.FC = () => {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { borderRadiusLG },
   } = theme.useToken();
 
   return (

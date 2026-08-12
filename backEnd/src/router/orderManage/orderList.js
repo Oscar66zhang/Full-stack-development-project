@@ -7,49 +7,49 @@ const orderListController = require("../../controllers/orderManage/orderListCont
 // 获取订单列表
 router.get(
   "/order/getOrderList",
-  verifyToken(false),
+  verifyToken(),
   orderListController.getOrderList,
 );
 
 // 查询订单
 router.get(
   "/order/searchOrderList",
-  verifyToken(false),
+  verifyToken(),
   orderListController.searchOrderList,
 );
 
 // 获取订单详情
 router.get(
   "/order/getOrderDetail/:orderId",
-  verifyToken(false),
+  verifyToken(),
   orderListController.getOrderDetail,
 );
 
 // 导出订单
 router.get(
   "/order/exportOrderList",
-  verifyToken(false),
+  verifyToken(),
   orderListController.exportOrderList,
 );
 
 // 创建订单
 router.post(
   "/order/createOrderList",
-  verifyToken(false),
+  verifyToken(),
   orderListController.createOrderList,
 );
 
 // 删除订单
 router.post(
   "/order/deleteOrderList/:_id",
-  verifyToken(false),
+  verifyToken(),
   orderListController.deleteOrderList,
 );
 
 // 更新订单打点
 router.post(
   "/order/updateOrderRoute",
-  verifyToken(false),
+  verifyToken(),
   orderListController.updateOrderRoute,
 );
 

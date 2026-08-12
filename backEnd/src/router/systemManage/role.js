@@ -5,22 +5,22 @@ const roleController = require("../../controllers/systemManage/roleController");
 
 router.get(
   "/roles/getRoleList",
-  verifyToken(false),
+  verifyToken(),
   roleController.getRoleList,
 );
 router.get(
   "/roles/getRoleById",
-  verifyToken(false),
+  verifyToken(),
   roleController.getRoleById,
 );
 router.post(
   "/roles/updatePermission",
-  verifyToken(false),
+  verifyToken(),
   roleController.updatePermission,
 );
 
-router.post("/roles/addRole", verifyToken(false), roleController.addRole);
-router.post("/roles/editRole", verifyToken(false), roleController.editRole);
-router.post("/roles/deleteRole", verifyToken(false), roleController.deleteRole);
+router.post("/roles/addRole", verifyToken(), roleController.addRole);
+router.post("/roles/editRole", verifyToken(), roleController.editRole);
+router.post("/roles/deleteRole", verifyToken(), roleController.deleteRole);
 
 module.exports = router;

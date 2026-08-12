@@ -23,6 +23,9 @@ export const useStore = create<{
   // 更新用户信息
   updateUserInfo: (userInfo: UserItem) => void;
 
+  // 清空登录状态
+  clearAuth: () => void;
+
   // 切换菜单折叠状态
   updateCollapsed: () => void;
 
@@ -30,7 +33,7 @@ export const useStore = create<{
   updateTheme: (isDark: boolean) => void;
 }>(set => ({
   // token 初始值
-  token: '',
+  token: localStorage.getItem('token') || '',
 
   // 用户信息初始值，避免页面一开始取值时报 undefined
   userInfo: {
@@ -56,13 +59,38 @@ export const useStore = create<{
   isDark: storage.get('isDark') || false,
 
   // 保存登录 token 到全局状态
-  updateToken: token => set({ token }),
+  updateToken: token => {
+    localStorage.setItem('token', token);
+    set({ token });
+  },
 
   // 更新暗黑模式状态
   updateTheme: isDark => set({ isDark }),
 
   // 保存当前登录用户信息
   updateUserInfo: (userInfo: UserItem) => set({ userInfo }),
+
+  clearAuth: () => {
+    localStorage.removeItem('token');
+    set({
+      token: '',
+      userInfo: {
+        _id: '',
+        userId: 0,
+        userName: '',
+        userEmail: '',
+        deptId: '',
+        state: 0,
+        mobile: '',
+        job: '',
+        role: 0,
+        roleList: '',
+        createId: 0,
+        deptName: '',
+        userImg: '',
+      },
+    });
+  },
 
   // 切换左侧菜单展开 / 折叠
   updateCollapsed: () =>
